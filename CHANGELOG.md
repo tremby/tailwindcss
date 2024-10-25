@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Nothing yet!
 
+### Fixed
+
+- Ensure support for JS plugins that contribute utilities starting with `@` ([#14793](https://github.com/tailwindlabs/tailwindcss/pull/14793))
+
 ## [4.0.0-alpha.30] - 2024-10-24
 
 ### Added

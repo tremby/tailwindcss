@@ -2973,6 +2973,70 @@ describe('matchUtilities()', () => {
     ).toEqual('')
   })
 
+  test('custom functional utilities can start with @', async () => {
+    async function run(candidates: string[]) {
+      let compiled = await compile(
+        css`
+          @plugin "my-plugin";
+          @tailwind utilities;
+        `,
+
+        {
+          async loadModule(id, base) {
+            return {
+              base,
+              module: ({ matchUtilities }: PluginAPI) => {
+                matchUtilities(
+                  { '@container': (value) => ({ container: value }) },
+                  {
+                    values: {
+                      DEFAULT: 'inline-size',
+                      normal: 'normal',
+                    },
+                  },
+                )
+              },
+            }
+          },
+        },
+      )
+
+      return compiled.build(candidates)
+    }
+
+    // Classes are emitted twice because we have a core utility already adding `@container`
+    expect(optimizeCss(await run(['@container', '@container-normal', 'hover:@container'])).trim())
+      .toMatchInlineSnapshot(`
+        ".\\@container {
+          container-type: inline-size;
+        }
+
+        .\\@container-normal {
+          container-type: normal;
+        }
+
+        .\\@container {
+          container: inline-size;
+        }
+
+        .\\@container-normal {
+          container: normal;
+        }
+
+        @media (hover: hover) {
+          .hover\\:\\@container:hover {
+            container-type: inline-size;
+          }
+        }
+
+        @media (hover: hover) {
+          .hover\\:\\@container:hover {
+            container: inline-size;
+          }
+        }"
+      `)
+  })
+
   test('custom functional utilities can return an array of rules', async () => {
     let compiled = await compile(
       css`

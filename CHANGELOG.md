@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- _Upgrade (experimental)_: Migrate arbitrary values to modern built-in values ([#14841](https://github.com/tailwindlabs/tailwindcss/pull/14841))
+
 ### Fixed
 
 - Detect classes in new files when using `@tailwindcss/postcss` ([#14829](https://github.com/tailwindlabs/tailwindcss/pull/14829))
